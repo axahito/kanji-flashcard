@@ -8,7 +8,8 @@
 @theme inline {
   --color-background: var(--background);
   --color-foreground: var(--foreground);
-  --font-sans: var(--font-geist-sans);
+  --font-noto: "Noto Sans JP", sans-serif;
+  --font-indie: "Indie Flower", cursive;
   --font-mono: var(--font-geist-mono);
 }
 
@@ -17,6 +18,21 @@
     --background: #0a0a0a;
     --foreground: #ededed;
   }
+}
+
+@font-face {
+  font-family: "Noto Sans JP";
+  src: url("/fonts/NotoSansJP/NotoSansJP-VariableFont_wght.woff2")
+    format("woff2");
+  font-weight: 100 900;
+  font-display: swap;
+}
+
+@font-face {
+  font-family: "Indie Flower";
+  src: url("https://fonts.google.com/share?selection.family=Indie+Flower");
+  font-weight: 100 900;
+  font-display: swap;
 }
 
 body {
