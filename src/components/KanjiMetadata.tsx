@@ -44,21 +44,22 @@ const KanjiMetadata = ({ kanji, metadata }: Props) => {
   }
 
   return (
-    <div className="grid grid-cols-12 text-[#504B38] text-lg w-full font-indie text-left">
+    <div className="grid grid-cols-12 text-[#504B38] text-sm lg:text-lg w-full font-indie text-left">
       <div className="col-span-2">Reading: </div>
-      <div className="col-span-4 font-semibold">
+      <div className="pl-[16px] lg:pl-0 col-span-12 lg:col-span-4 font-semibold">
         {getPreferredReading(kanji, metadata)}
       </div>
 
       <div className="col-span-2">Meaning: </div>
-      <div className="col-span-4 font-semibold">
+      <div className="pl-[16px] lg:pl-0 col-span-12 lg:col-span-4 font-semibold">
         {metadata.meanings?.[0] || ""}
       </div>
 
-      <div className="col-span-2">Level: </div>
-      <div className="col-span-4 font-semibold">
+      {/* debugging only */}
+      {/* <div className="col-span-2">Level: </div>
+      <div className="col-span-12 lg:col-span-4 font-semibold">
         {metadata.jlpt_new?.toString() || ""}
-      </div>
+      </div> */}
     </div>
   );
 };
