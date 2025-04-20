@@ -114,7 +114,7 @@ const Flashcard = ({ index }: Props) => {
 
   return (
     <Suspense fallback={<div>Loading...</div>}>
-      <div className="w-[393px] lg:w-[540px] lg:h-[236px] bg-[#F2E2B1] flex flex-col items-center justify-center p-[32px] gap-[32px] relative rounded-md shadow-xl z-40">
+      <div className="w-full lg:w-[540px] lg:h-[236px] bg-[#F2E2B1] flex flex-col items-center justify-center p-[32px] gap-[32px] relative rounded-md shadow-xl z-40">
         {/* <div className="rounded-full bg-transparent w-[32px] h-[32px] absolute top-[16px] left-[16px]" /> */}
         {/* <div className="rounded-xs bg-gradient-to-l from-[#E4E0E1] to-[#B7B7B7] w-[100px] h-[16px] absolute top-[4px] left-[-45px] rotate-[35deg]" /> */}
         <h1 className="text-8xl text-[#504B38] font-noto">{kanji}</h1>

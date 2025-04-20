@@ -3,6 +3,7 @@ import React from "react";
 import {
   Disclosure,
   DisclosureButton,
+  DisclosurePanel,
 } from "@headlessui/react";
 import { AdjustmentsHorizontalIcon } from "@heroicons/react/24/outline";
 import { useSearchParams } from "next/navigation";
@@ -44,7 +45,7 @@ const KanjiFilter = () => {
       {({ open }) => (
         <>
           <DisclosureButton className="flex justify-start">
-            <motion.span className="text-sm font-medium hover:text-[#BDB395] flex items-center gap-2">
+            <motion.span className="text-sm font-medium hover:text-[#BDB395] flex items-center gap-2 cursor-pointer">
               <AdjustmentsHorizontalIcon width={24} height={24} />
               Filters
             </motion.span>
@@ -53,7 +54,7 @@ const KanjiFilter = () => {
           {/* panel with Framer Motion animation */}
           <AnimatePresence>
             {open && (
-              <Disclosure.Panel
+              <DisclosurePanel
                 static
                 as={motion.div}
                 initial={{ opacity: 0, height: 0 }}
@@ -67,9 +68,9 @@ const KanjiFilter = () => {
                   height: 0,
                   transition: { duration: 0.2, ease: [0.4, 0, 1, 1] },
                 }}
-                className="overflow-hidden"
+                className="overflow-hidden shadow-gray-200 shadow-sm"
               >
-                <div className="mt-2 p-[8px] rounded-md shadow-md shadow-gray-200 flex flex-col gap-[8px]">
+                <div className="mt-2 p-[8px] rounded-md shadow-md flex flex-col gap-[8px]">
                   {/* jlpt filter */}
                   <div className="flex gap-[16px]">
                     JLPT:
@@ -96,7 +97,7 @@ const KanjiFilter = () => {
                     </span>
                   </div>
                 </div>
-              </Disclosure.Panel>
+              </DisclosurePanel>
             )}
           </AnimatePresence>
         </>
