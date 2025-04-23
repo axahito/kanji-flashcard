@@ -96,6 +96,21 @@ const KanjiFilter = () => {
                       ))}
                     </span>
                   </div>
+
+                  {/* no-repeat */}
+                  {/* <div className="flex gap-[4px]">
+                    <input
+                      type="checkbox"
+                      onChange={(event: any) => {
+                        const params = new URLSearchParams(
+                          searchParams.toString()
+                        );
+
+                        router.push(`?repeat=${event.target.checked}`);
+                      }}
+                    />
+                    No Repeat
+                  </div> */}
                 </div>
               </DisclosurePanel>
             )}
