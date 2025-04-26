@@ -26,6 +26,7 @@ const Flashcard = ({ index }: Props) => {
   ]);
   const [queryLevels, setQueryLevels] = useState<string[]>([]);
   const [isAnimating, setIsAnimating] = useState(false);
+  const [isFlipped, setIsFlipped] = useState(false);
 
   useEffect(() => {
     const imaKanji = fetchUniqueKanji({ currentKanji: cards[0]?.kanji?.[0] });
@@ -40,11 +41,12 @@ const Flashcard = ({ index }: Props) => {
   }, [setCards, queryLevels]);
 
   useEffect(() => {
+    setIsFlipped(false);
     const newLevels = searchParams.getAll("level");
     if (!isEqual(newLevels, queryLevels)) {
       setQueryLevels(newLevels);
     }
-  }, [searchParams]);
+  }, [searchParams, setIsFlipped]);
 
   // TODO: clean this up
   const fetchUniqueKanji = useCallback(
@@ -93,17 +95,17 @@ const Flashcard = ({ index }: Props) => {
        * @param {string} kanji - The kanji character to save.
        * @returns {void}
        */
-      const handleSave = (kanji: string) => {
-        const seenKanji = localStorage.getItem("seenKanji");
-        if (seenKanji) {
-          localStorage.setItem(
-            "seenKanji",
-            JSON.stringify([...JSON.parse(seenKanji), kanji])
-          );
-        } else {
-          localStorage.setItem("seenKanji", JSON.stringify([kanji]));
-        }
-      };
+      // const handleSave = (kanji: string) => {
+      //   const seenKanji = localStorage.getItem("seenKanji");
+      //   if (seenKanji) {
+      //     localStorage.setItem(
+      //       "seenKanji",
+      //       JSON.stringify([...JSON.parse(seenKanji), kanji])
+      //     );
+      //   } else {
+      //     localStorage.setItem("seenKanji", JSON.stringify([kanji]));
+      //   }
+      // };
 
       let attempts = 0;
 
@@ -112,7 +114,7 @@ const Flashcard = ({ index }: Props) => {
         const kanjiData = index ? getOneByIndex(index) : getOneRandom();
 
         if (kanjiData[0] !== currentKanji) {
-          handleSave(kanjiData[0]);
+          // handleSave(kanjiData[0]);
           return kanjiData as [string, KanjiData];
         } else if (attempts < maxAttempts) {
           return tryFetch();
@@ -155,43 +157,88 @@ const Flashcard = ({ index }: Props) => {
     <Suspense fallback={<div>Loading...</div>}>
       <AnimatePresence>
         {cards.map((card, index) => {
+          const variants = {
+            next: {
+              top: index * 12,
+              right: isAnimating && index === 1 ? index * 12 + 32 : index * 12,
+              zIndex: cards.length - index,
+            },
+            flip: {
+              rotateY: 180,
+              top: index * 12,
+              right: index * 12,
+              zIndex: cards.length - index,
+              transition: { duration: 0.5 },
+            },
+          };
+
           return (
             <motion.div
               key={`fg-${card.id}`}
-              // animate={{
-              //   top: index * 12,
-              //   right: index * 12,
-              //   zIndex: cards.length - index,
-              // }}
-              animate={{
-                top: index * 12,
-                right:
-                  isAnimating && index === 1 ? index * 12 + 32 : index * 12,
-                zIndex: cards.length - index,
+              variants={variants}
+              animate={index === 0 && isFlipped ? "flip" : "next"}
+              className={`absolute w-full lg:w-[540px] h-[248px] lg:h-[236px] bg-[#F2E2B1] flex flex-col ${
+                isFlipped
+                  ? "justify-start  items-end"
+                  : "justify-center  items-center"
+              } p-[32px] gap-[32px] rounded-md shadow-xl`}
+              onClick={() => {
+                setIsFlipped(!isFlipped);
               }}
-              className={`absolute w-full lg:w-[540px] lg:h-[236px] bg-[#F2E2B1] flex flex-col items-center justify-center p-[32px] gap-[32px] rounded-md shadow-xl`}
             >
-              <h1 className="text-8xl text-[#504B38] font-noto">
-                {card?.kanji?.[0]}
-              </h1>
-              <KanjiMetadata
-                kanji={card?.kanji?.[0] || ""}
-                metadata={card?.kanji?.[1] || null}
-              />
-
-              <button
-                onClick={() => {
-                  handleNext(index);
-                }}
-                className="text-[#504B38] absolute bottom-[16px] right-[16px] hover:text-[#BDB395] transition-colors duration-200 cursor-pointer"
-              >
-                <ArrowRightIcon width={24} height={24} />
-              </button>
+              {isFlipped ? (
+                <BackSide card={card} />
+              ) : (
+                <FrontSide card={card} index={index} onClick={handleNext} />
+              )}
             </motion.div>
           );
         })}
       </AnimatePresence>
     </Suspense>
+  );
+};
+
+const FrontSide = ({
+  card,
+  onClick,
+  index,
+}: {
+  card: KanjiItem;
+  onClick: (index: number) => void;
+  index: number;
+}) => {
+  return (
+    <>
+      <h1 className="text-8xl text-[#504B38] font-noto">{card?.kanji?.[0]}</h1>
+      <KanjiMetadata
+        kanji={card?.kanji?.[0] || ""}
+        metadata={card?.kanji?.[1] || null}
+      />
+
+      <button
+        onClick={(event: React.MouseEvent) => {
+          event.stopPropagation();
+          onClick(index);
+        }}
+        className="text-[#504B38] absolute bottom-[16px] right-[16px] hover:text-[#BDB395] transition-colors duration-200 cursor-pointer"
+      >
+        <ArrowRightIcon width={24} height={24} />
+      </button>
+    </>
+  );
+};
+
+const BackSide = ({ card }: { card: KanjiItem }) => {
+  return (
+    <div className="rotate-y-180 flex flex-col gap-[8px] w-full">
+      <h3 className="text-6xl text-[#504B38] font-noto">{card?.kanji?.[0]}</h3>
+      <KanjiMetadata
+        kanji={card?.kanji?.[0] || ""}
+        metadata={card?.kanji?.[1] || null}
+        mode="detail"
+      />
+    </div>
   );
 };
 

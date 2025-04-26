@@ -5,6 +5,7 @@ import React from "react";
 type Props = {
   kanji: string;
   metadata: KanjiData | null;
+  mode?: "flash" | "detail";
 };
 
 const onyomiPreferred = [
@@ -24,7 +25,7 @@ const onyomiPreferred = [
   "円",
 ];
 
-const KanjiMetadata = ({ kanji, metadata }: Props) => {
+const KanjiMetadata = ({ kanji, metadata, mode = "flash" }: Props) => {
   const getPreferredReading = (kanji: string, metadata: KanjiData) => {
     const { readings_on, readings_kun } = metadata;
 
@@ -41,6 +42,60 @@ const KanjiMetadata = ({ kanji, metadata }: Props) => {
 
   if (!metadata) {
     return <>No Data</>;
+  }
+
+  if (mode === "detail") {
+    return (
+      <div className="flex flex-col lg:flex-row justify-between text-[#504B38] text-xs lg:text-sm w-full font-indie text-left">
+        {/* readings, jlpt */}
+        <div className="w-full lg:w-1/2 flex flex-col gap-[4px]">
+          <p className="w-full">
+            On Yomi:{" "}
+            <span className="font-semibold">
+              {metadata.readings_on?.join(", ") || ""}
+            </span>
+          </p>
+
+          <p className="w-full">
+            Kun Yomi:{" "}
+            <span className="font-semibold">
+              {metadata.readings_kun?.join(", ") || ""}
+            </span>
+          </p>
+
+          <p className="w-full">
+            JLPT:{" "}
+            <span className="font-semibold">
+              {metadata.jlpt_new?.toString() || "-"}
+            </span>
+          </p>
+        </div>
+
+        {/* meanings, stroke */}
+        <div className="w-full lg:w-1/2 flex flex-col gap-[4px]">
+          <p className="w-full">
+            Meanings:{" "}
+            <span className="font-semibold">
+              {metadata.meanings?.join(", ") || ""}
+            </span>
+          </p>
+
+          <p className="w-full">
+            Grade:{" "}
+            <span className="font-semibold">
+              {metadata.grade?.toString() || "-"}
+            </span>
+          </p>
+
+          <p className="w-full">
+            Strokes:{" "}
+            <span className="font-semibold">
+              {metadata.strokes?.toString() || "-"}
+            </span>
+          </p>
+        </div>
+      </div>
+    );
   }
 
   return (
