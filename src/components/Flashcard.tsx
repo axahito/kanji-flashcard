@@ -20,15 +20,12 @@ type KanjiItem = {
 const Flashcard = ({ index }: Props) => {
   const searchParams = useSearchParams();
 
-  // const [[kanji, data], setKanjiData] = useState<[string, KanjiData | null]>([
-  //   "",
-  //   null,
-  // ]);
   const [cards, setCards] = useState<KanjiItem[]>([
     { id: 1, kanji: null },
     { id: 2, kanji: null },
   ]);
   const [queryLevels, setQueryLevels] = useState<string[]>([]);
+  const [isAnimating, setIsAnimating] = useState(false);
 
   useEffect(() => {
     const imaKanji = fetchUniqueKanji({ currentKanji: cards[0]?.kanji?.[0] });
@@ -131,6 +128,7 @@ const Flashcard = ({ index }: Props) => {
   );
 
   const handleNext = (from: number) => {
+    setIsAnimating(true);
     const atarashiiKanji = fetchUniqueKanji({
       currentKanji: cards[from]?.kanji?.[0],
     });
@@ -149,21 +147,29 @@ const Flashcard = ({ index }: Props) => {
 
       return newCards;
     });
+
+    setTimeout(() => setIsAnimating(false), 500);
   };
 
   return (
     <Suspense fallback={<div>Loading...</div>}>
-      <AnimatePresence mode="wait">
+      <AnimatePresence>
         {cards.map((card, index) => {
           return (
             <motion.div
               key={`fg-${card.id}`}
+              // animate={{
+              //   top: index * 12,
+              //   right: index * 12,
+              //   zIndex: cards.length - index,
+              // }}
               animate={{
                 top: index * 12,
-                right: index * 12,
+                right:
+                  isAnimating && index === 1 ? index * 12 + 32 : index * 12,
                 zIndex: cards.length - index,
               }}
-              className="absolute w-full lg:w-[540px] lg:h-[236px] bg-[#F2E2B1] flex flex-col items-center justify-center p-[32px] gap-[32px] rounded-md shadow-xl"
+              className={`absolute w-full lg:w-[540px] lg:h-[236px] bg-[#F2E2B1] flex flex-col items-center justify-center p-[32px] gap-[32px] rounded-md shadow-xl`}
             >
               <h1 className="text-8xl text-[#504B38] font-noto">
                 {card?.kanji?.[0]}
