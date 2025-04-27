@@ -2,7 +2,10 @@
 import React, { Suspense, useCallback, useEffect, useState } from "react";
 import kanjiDB from "../data/kanji-jouyou.json";
 import KanjiMetadata from "./KanjiMetadata";
-import { ArrowRightIcon } from "@heroicons/react/24/outline";
+import {
+  ArrowRightIcon,
+  ArrowTurnDownRightIcon,
+} from "@heroicons/react/24/outline";
 import { useSearchParams } from "next/navigation";
 import { KanjiData } from "@/types/Kanji";
 import { AnimatePresence, motion } from "motion/react";
@@ -159,16 +162,18 @@ const Flashcard = ({ index }: Props) => {
         {cards.map((card, index) => {
           const variants = {
             next: {
+              rotateY: 0,
               top: index * 12,
               right: isAnimating && index === 1 ? index * 12 + 32 : index * 12,
               zIndex: cards.length - index,
+              transition: { duration: 0.3 },
             },
             flip: {
               rotateY: 180,
               top: index * 12,
               right: index * 12,
               zIndex: cards.length - index,
-              transition: { duration: 0.5 },
+              transition: { duration: 0.3 },
             },
           };
 
@@ -177,16 +182,16 @@ const Flashcard = ({ index }: Props) => {
               key={`fg-${card.id}`}
               variants={variants}
               animate={index === 0 && isFlipped ? "flip" : "next"}
-              className={`absolute w-full lg:w-[540px] h-[248px] lg:h-[236px] bg-[#F2E2B1] flex flex-col ${
-                isFlipped
-                  ? "justify-start  items-end"
-                  : "justify-center  items-center"
+              className={`absolute w-full lg:w-[540px] min-h-[248px] lg:min-h-[236px] bg-[#F2E2B1] flex flex-col cursor-grab ${
+                index === 0 && isFlipped
+                  ? "justify-start items-end"
+                  : "justify-center items-center"
               } p-[32px] gap-[32px] rounded-md shadow-xl`}
               onClick={() => {
                 setIsFlipped(!isFlipped);
               }}
             >
-              {isFlipped ? (
+              {index === 0 && isFlipped ? (
                 <BackSide card={card} />
               ) : (
                 <FrontSide card={card} index={index} onClick={handleNext} />
@@ -223,7 +228,7 @@ const FrontSide = ({
         }}
         className="text-[#504B38] absolute bottom-[16px] right-[16px] hover:text-[#BDB395] transition-colors duration-200 cursor-pointer"
       >
-        <ArrowRightIcon width={24} height={24} />
+        <ArrowTurnDownRightIcon width={24} height={24} />
       </button>
     </>
   );
