@@ -2,9 +2,7 @@
 import React, { Suspense, useCallback, useEffect, useState } from "react";
 import kanjiDB from "../data/kanji-jouyou.json";
 import KanjiMetadata from "./KanjiMetadata";
-import {
-  ArrowTurnDownRightIcon,
-} from "@heroicons/react/24/outline";
+import { ArrowTurnDownRightIcon } from "@heroicons/react/24/outline";
 import { useSearchParams } from "next/navigation";
 import { KanjiData } from "@/types/Kanji";
 import { AnimatePresence, motion } from "motion/react";
@@ -181,7 +179,7 @@ const Flashcard = ({ index }: Props) => {
               key={`fg-${card.id}`}
               variants={variants}
               animate={index === 0 && isFlipped ? "flip" : "next"}
-              className={`absolute w-full lg:w-[540px] min-h-[248px] lg:min-h-[236px] bg-[#F2E2B1] flex flex-col cursor-grab ${
+              className={`absolute w-full lg:w-[540px] h-[248px] lg:min-h-[236px] bg-[#F2E2B1] flex flex-col cursor-grab ${
                 index === 0 && isFlipped
                   ? "justify-start items-end"
                   : "justify-center items-center"
@@ -234,14 +232,67 @@ const FrontSide = ({
 };
 
 const BackSide = ({ card }: { card: KanjiItem }) => {
+  const metadata = card.kanji?.[1];
+
+  if (!metadata) {
+    return <>No Data</>;
+  }
+
   return (
     <div className="rotate-y-180 flex flex-col gap-[8px] w-full">
-      <h3 className="text-6xl text-[#504B38] font-noto">{card?.kanji?.[0]}</h3>
-      <KanjiMetadata
-        kanji={card?.kanji?.[0] || ""}
-        metadata={card?.kanji?.[1] || null}
-        mode="detail"
-      />
+      <div className="flex flex-row gap-[4px] justify-between text-[#504B38] text-xs lg:text-sm w-full font-indie text-left">
+        {/* kanji, readings */}
+        <div className="w-full lg:w-1/2 flex flex-col gap-[4px]">
+          <h3 className="text-6xl text-[#504B38] font-noto">
+            {card?.kanji?.[0]}
+          </h3>
+
+          <p className="w-full">
+            On Yomi:{" "}
+            <span className="font-semibold">
+              {metadata.readings_on?.join(", ") || ""}
+            </span>
+          </p>
+
+          <p className="w-full">
+            Kun Yomi:{" "}
+            <span className="font-semibold">
+              {metadata.readings_kun?.join(", ") || ""}
+            </span>
+          </p>
+        </div>
+
+        {/* meanings, stroke, jlpt */}
+        <div className="w-full lg:w-1/2 flex flex-col gap-[4px]">
+          <p className="w-full">
+            Meanings:{" "}
+            <span className="font-semibold">
+              {metadata.meanings?.join(", ") || ""}
+            </span>
+          </p>
+
+          <p className="w-full">
+            Grade:{" "}
+            <span className="font-semibold">
+              {metadata.grade?.toString() || "-"}
+            </span>
+          </p>
+
+          <p className="w-full">
+            Strokes:{" "}
+            <span className="font-semibold">
+              {metadata.strokes?.toString() || "-"}
+            </span>
+          </p>
+
+          <p className="w-full">
+            JLPT:{" "}
+            <span className="font-semibold">
+              {metadata.jlpt_new?.toString() || "-"}
+            </span>
+          </p>
+        </div>
+      </div>
     </div>
   );
 };
