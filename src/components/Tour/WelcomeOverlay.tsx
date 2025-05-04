@@ -2,6 +2,7 @@
 import { useTour } from "@/contexts/TourProvider";
 import React from "react";
 import IconButton from "../Buttons/IconButton";
+import Typewriter from "./Typewriter";
 
 const WelcomeOverlay = () => {
   const {
@@ -106,11 +107,7 @@ const WelcomeOverlay = () => {
         }}
       >
         {/* prompt */}
-        <div className="w-full flex justify-center items-center px-[32px] pt-[32px]">
-          <h4 className="text-[#222831] text-2xl">
-            {steps[currentStep].prompt}
-          </h4>
-        </div>
+        <Typewriter currentStep={currentStep} steps={steps} />
 
         {/* icons */}
         <div className="w-full flex justify-center mt-auto p-[16px] gap-[8px]">

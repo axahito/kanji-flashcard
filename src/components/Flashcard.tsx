@@ -29,6 +29,7 @@ const Flashcard = ({ index }: Props) => {
   const [queryLevels, setQueryLevels] = useState<string[]>([]);
   const [isAnimating, setIsAnimating] = useState(false);
   const [isFlipped, setIsFlipped] = useState(false);
+  // const [isStartTourModalOpen, setIsStartTourModalOpen] = useState(false);
 
   const { setIsRunning, setSteps } = useTour();
 
@@ -119,6 +120,7 @@ const Flashcard = ({ index }: Props) => {
     const hasRunTour = localStorage.getItem("hasRunTour") === "true";
 
     if (!hasRunTour) {
+      // setIsStartTourModalOpen(true);
       setIsRunning(true);
     }
   }, []);
@@ -272,6 +274,45 @@ const Flashcard = ({ index }: Props) => {
           );
         })}
       </AnimatePresence>
+
+      {/* //TODO: blocked by audioRefs not assigned on first step */}
+      {/* <Modal
+        isOpen={isStartTourModalOpen}
+        onClose={() => setIsStartTourModalOpen(false)}
+        title="Site Tour"
+      >
+        <div className="flex flex-col gap-[8px] p-[16px] text-[#222831] font-indie">
+          <div className="flex flex-col">
+            <h5 className="font-semibold">
+              First time here? Let's take a quick tour!
+            </h5>
+            <p className="text-base">
+              It'll help you get started with learning kanji faster
+            </p>
+          </div>
+        </div>
+
+        <div className="w-full flex justify-end p-[16px] gap-[8px]">
+          {!config?.forced && (
+            <OutlinedButton
+              onClick={() => setIsStartTourModalOpen(false)}
+              className="lg:min-w-[100px]"
+            >
+              Skip
+            </OutlinedButton>
+          )}
+
+          <PrimaryButton
+            onClick={() => {
+              setIsRunning(true);
+              setIsStartTourModalOpen(false);
+            }}
+            className="lg:min-w-[100px]"
+          >
+            Start
+          </PrimaryButton>
+        </div>
+      </Modal> */}
     </Suspense>
   );
 };
@@ -287,7 +328,7 @@ const FrontSide = ({
 }) => {
   return (
     <>
-      <h1 className="text-8xl text-[#504B38] font-noto kanji-main">
+      <h1 className="text-[#504B38] font-noto kanji-main">
         {card?.kanji?.[0]}
       </h1>
       <KanjiMetadata
@@ -330,9 +371,7 @@ const BackSide = ({ card }: { card: KanjiItem }) => {
       <div className="flex flex-row gap-[4px] justify-between text-[#504B38] text-xs lg:text-sm w-full font-indie text-left">
         {/* kanji, readings */}
         <div className="w-full lg:w-1/2 flex flex-col gap-[4px]">
-          <h3 className="text-6xl text-[#504B38] font-noto">
-            {card?.kanji?.[0]}
-          </h3>
+          <h3 className="text-[#504B38] font-noto">{card?.kanji?.[0]}</h3>
 
           <p className="w-full">
             On Yomi:{" "}
