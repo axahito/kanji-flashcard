@@ -21,7 +21,7 @@ type TourContextProps = {
   };
 };
 
-type StepType = {
+export type StepType = {
   target: string;
   prompt: string;
   callback?: () => void;
