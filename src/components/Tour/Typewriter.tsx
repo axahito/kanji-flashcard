@@ -38,7 +38,7 @@ const Typewriter = ({ currentStep, steps }: Props) => {
     const sfx = audioRefs.current[0];
     if (!sfx) return;
     sfx.currentTime = 0;
-    sfx.volume = 0.6;
+    sfx.volume = 1;
 
     sfx.play().catch((e) => console.log("SFX error:", e));
   };

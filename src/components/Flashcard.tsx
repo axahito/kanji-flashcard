@@ -328,7 +328,7 @@ const FrontSide = ({
 }) => {
   return (
     <>
-      <h1 className="text-[#504B38] font-noto kanji-main">
+      <h1 className="text-[#504B38] font-noto kanji-main text-8xl font-normal">
         {card?.kanji?.[0]}
       </h1>
       <KanjiMetadata
@@ -371,7 +371,9 @@ const BackSide = ({ card }: { card: KanjiItem }) => {
       <div className="flex flex-row gap-[4px] justify-between text-[#504B38] text-xs lg:text-sm w-full font-indie text-left">
         {/* kanji, readings */}
         <div className="w-full lg:w-1/2 flex flex-col gap-[4px]">
-          <h3 className="text-[#504B38] font-noto">{card?.kanji?.[0]}</h3>
+          <h3 className="text-[#504B38] font-noto font-normal text-5xl">
+            {card?.kanji?.[0]}
+          </h3>
 
           <p className="w-full">
             On Yomi:{" "}
