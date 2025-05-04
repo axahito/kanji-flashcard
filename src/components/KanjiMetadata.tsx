@@ -99,7 +99,7 @@ const KanjiMetadata = ({ kanji, metadata, mode = "flash" }: Props) => {
   }
 
   return (
-    <div className="grid grid-cols-12 text-[#504B38] text-sm lg:text-lg w-full font-indie text-left">
+    <div className="grid grid-cols-12 text-[#504B38] text-sm lg:text-lg w-full font-indie text-left kanji-reading-meaning">
       <div className="col-span-2">Reading: </div>
       <div className="pl-[16px] lg:pl-0 col-span-12 lg:col-span-4 font-semibold">
         {getPreferredReading(kanji, metadata)}

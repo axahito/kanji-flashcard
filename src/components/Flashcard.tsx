@@ -7,6 +7,8 @@ import { useSearchParams } from "next/navigation";
 import { KanjiData } from "@/types/Kanji";
 import { AnimatePresence, motion } from "motion/react";
 import { isEqual } from "lodash";
+import { useTour } from "@/contexts/TourProvider";
+import IconButton from "./Buttons/IconButton";
 
 type Props = {
   index?: number;
@@ -28,6 +30,8 @@ const Flashcard = ({ index }: Props) => {
   const [isAnimating, setIsAnimating] = useState(false);
   const [isFlipped, setIsFlipped] = useState(false);
 
+  const { setIsRunning, setSteps } = useTour();
+
   useEffect(() => {
     const imaKanji = fetchUniqueKanji({ currentKanji: cards[0]?.kanji?.[0] });
     const tsugiKanji = fetchUniqueKanji({ currentKanji: cards[1]?.kanji?.[0] });
@@ -47,6 +51,77 @@ const Flashcard = ({ index }: Props) => {
       setQueryLevels(newLevels);
     }
   }, [searchParams, setIsFlipped]);
+
+  useEffect(() => {
+    setSteps([
+      {
+        target: ".welcome",
+        prompt:
+          "Welcome to Kanji Flashcards! Ready to dive into learning kanji?",
+      },
+      {
+        target: ".flashcard",
+        prompt: "Here's your flashcard—the starting point of your journey.",
+        padding: {
+          px: 32,
+          py: 32,
+        },
+      },
+      {
+        target: ".flashcard .kanji-main",
+        prompt: "This is the main kanji you'll focus on memorizing.",
+      },
+      {
+        target: ".flashcard .kanji-reading-meaning",
+        prompt: "Below it, you'll find its reading and meaning.",
+      },
+      {
+        target: ".flashcard",
+        prompt: "Tap or click the card to flip it over.",
+        callback: () => setIsFlipped(true),
+        padding: {
+          px: 32,
+          py: 32,
+        },
+      },
+      {
+        target: ".flashcard",
+        prompt: "The back side gives you more detailed info about the kanji.",
+        callback: () => setIsFlipped(false),
+        padding: {
+          px: 32,
+          py: 32,
+        },
+      },
+      {
+        target: ".arrow-next",
+        prompt: "When you're ready, use the arrow to move to the next kanji.",
+        callback: () => handleNext(0),
+      },
+      {
+        target: ".flashcard",
+        prompt: "You can now memorize the next kanji, and the next one after.",
+        padding: {
+          px: 32,
+          py: 32,
+        },
+      },
+      {
+        target: ".filter-controls",
+        prompt: "Want to focus? You can filter kanji by JLPT level.",
+      },
+      {
+        target: ".end",
+        prompt: "Enjoy learning—and keep chasing that dream!",
+      },
+    ]);
+
+    const hasRunTour = localStorage.getItem("hasRunTour") === "true";
+
+    if (!hasRunTour) {
+      setIsRunning(true);
+    }
+  }, []);
 
   // TODO: clean this up
   const fetchUniqueKanji = useCallback(
@@ -183,7 +258,7 @@ const Flashcard = ({ index }: Props) => {
                 index === 0 && isFlipped
                   ? "justify-start items-end"
                   : "justify-center items-center"
-              } p-[32px] gap-[32px] rounded-md shadow-xl`}
+              } p-[32px] gap-[32px] rounded-md shadow-xl flashcard`}
               onClick={() => {
                 setIsFlipped(!isFlipped);
               }}
@@ -212,21 +287,33 @@ const FrontSide = ({
 }) => {
   return (
     <>
-      <h1 className="text-8xl text-[#504B38] font-noto">{card?.kanji?.[0]}</h1>
+      <h1 className="text-8xl text-[#504B38] font-noto kanji-main">
+        {card?.kanji?.[0]}
+      </h1>
       <KanjiMetadata
         kanji={card?.kanji?.[0] || ""}
         metadata={card?.kanji?.[1] || null}
       />
 
-      <button
+      {/* <button
         onClick={(event: React.MouseEvent) => {
           event.stopPropagation();
           onClick(index);
         }}
-        className="text-[#504B38] absolute bottom-[16px] right-[16px] hover:text-[#BDB395] transition-colors duration-200 cursor-pointer"
+        className="text-[#222831] absolute bottom-[16px] right-[16px] hover:text-[#393E46] transition-colors duration-200 cursor-pointer arrow-next"
       >
         <ArrowTurnDownRightIcon width={24} height={24} />
-      </button>
+      </button> */}
+
+      <IconButton
+        onClick={(event: React.MouseEvent) => {
+          event.stopPropagation();
+          onClick(index);
+        }}
+        className="absolute bottom-[16px] right-[16px] arrow-next"
+      >
+        <ArrowTurnDownRightIcon width={24} height={24} />
+      </IconButton>
     </>
   );
 };

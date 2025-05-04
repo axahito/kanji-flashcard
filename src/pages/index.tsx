@@ -16,6 +16,7 @@ export default function Home() {
         </section>
       </main>
       <footer className="row-start-3 flex gap-[24px] flex-wrap items-center justify-center"></footer>
+      <div className="welcome end w-0 h-0 hidden" />
     </div>
   );
 }

@@ -41,7 +41,7 @@ const KanjiFilter = () => {
 
   // TODO: make the transform for the DisclosureButton smooth movement
   return (
-    <Disclosure as="div" className="text-[#504B38] w-full" defaultOpen={true}>
+    <Disclosure as="div" className="text-[#504B38] w-full filter-controls" defaultOpen={true}>
       {({ open }) => (
         <>
           <DisclosureButton className="flex justify-start">
