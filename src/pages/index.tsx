@@ -15,7 +15,18 @@ export default function Home() {
           <Flashcard />
         </section>
       </main>
-      <footer className="row-start-3 flex gap-[24px] flex-wrap items-center justify-center"></footer>
+
+      <footer className="flex justify-center items-center bg-[#F6F0F0] text-[#504B38]">
+        Crafted by Abiyyu Rohman | #100ProjectsForJapan
+        {/* <span>
+          <Link href={"https://github.com/axahito"}>GitHub</Link> |{" "}
+          <Link href={"https://www.linkedin.com/in/abiyyu-rohman-227982181/"}>
+            LinkedIn
+          </Link>
+        </span> */}
+      </footer>
+
+      {/* element to hide tour highlight */}
       <div className="welcome end w-0 h-0 hidden" />
     </div>
   );
