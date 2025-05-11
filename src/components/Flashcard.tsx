@@ -351,6 +351,7 @@ const FrontSide = ({
           event.stopPropagation();
           onClick(index);
         }}
+        disabled={index !== 0}
         className="absolute bottom-[16px] right-[16px] arrow-next"
       >
         <ArrowTurnDownRightIcon width={24} height={24} />
