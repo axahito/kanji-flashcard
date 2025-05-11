@@ -1,6 +1,5 @@
 import Flashcard from "@/components/Flashcard";
 import KanjiFilter from "@/components/KanjiFilter";
-import Link from "next/link";
 
 export default function Home() {
   return (
