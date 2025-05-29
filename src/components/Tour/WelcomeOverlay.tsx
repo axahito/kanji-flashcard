@@ -95,14 +95,14 @@ const WelcomeOverlay = () => {
 
       {/* popover */}
       <div
-        className={`absolute w-[90dvw] lg:max-w-[400px] min-h-[236px] bg-[#D8D8D8] opacity-100 z-50 font-indie rounded-md flex flex-col justify-center items-center transition-all duration-300 ease-in-out 
+        className={`absolute w-[90dvw] lg:max-w-[400px] min-h-[136px] bg-[#D8D8D8] opacity-100 z-50 font-indie rounded-md flex flex-col justify-center items-center transition-all duration-300 ease-in-out 
           top-3/4 -translate-y-1/2 left-1/2 -translate-x-1/2 ${
             !top ? "lg:top-1/2" : "lg:translate-y-0"
           } ${!left ? "lg:left-1/2" : "lg:translate-x-0"}`}
         style={{
           // these will only apply at lg screens and up
           ...(window.innerWidth >= 1024 &&
-            top && { top: `${top + height + 24}px` }),
+            top && { top: `${top + height}px` }),
           ...(window.innerWidth >= 1024 && left && { left: `${left}px` }),
         }}
       >
