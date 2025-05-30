@@ -329,7 +329,7 @@ const Flashcard = ({ index }: Props) => {
               //     setIsFlipped(!isFlipped);
               //   }
               // }}
-              onClick={(_e) => {
+              onClick={() => {
                 if (index === 0 && !isDragging) {
                   setIsFlipped(!isFlipped);
                 }
