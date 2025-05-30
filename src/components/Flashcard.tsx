@@ -29,6 +29,7 @@ const Flashcard = ({ index }: Props) => {
   const [queryLevels, setQueryLevels] = useState<string[]>([]);
   const [isAnimating, setIsAnimating] = useState(false);
   const [isFlipped, setIsFlipped] = useState(false);
+  const [isDragging, setIsDragging] = useState(false);
   // const [isStartTourModalOpen, setIsStartTourModalOpen] = useState(false);
 
   const { setIsRunning, setSteps } = useTour();
@@ -123,6 +124,10 @@ const Flashcard = ({ index }: Props) => {
       // setIsStartTourModalOpen(true);
       setIsRunning(true);
     }
+
+    return () => {
+      setSteps(null);
+    };
   }, []);
 
   // TODO: clean this up
@@ -232,7 +237,7 @@ const Flashcard = ({ index }: Props) => {
 
   return (
     <Suspense fallback={<div>Loading...</div>}>
-      <AnimatePresence>
+      {/* <AnimatePresence>
         {cards.map((card, index) => {
           const variants = {
             next: {
@@ -263,6 +268,66 @@ const Flashcard = ({ index }: Props) => {
               } p-[32px] gap-[32px] rounded-md shadow-xl flashcard`}
               onClick={() => {
                 setIsFlipped(!isFlipped);
+              }}
+            >
+              {index === 0 && isFlipped ? (
+                <BackSide card={card} />
+              ) : (
+                <FrontSide card={card} index={index} onClick={handleNext} />
+              )}
+            </motion.div>
+          );
+        })}
+      </AnimatePresence> */}
+      <AnimatePresence>
+        {cards.map((card, index) => {
+          const variants = {
+            next: {
+              rotateY: 0,
+              top: index * 12,
+              right: isAnimating && index === 1 ? index * 12 + 32 : index * 12,
+              zIndex: cards.length - index,
+              transition: { duration: 0.3 },
+            },
+            flip: {
+              rotateY: 180,
+              top: index * 12,
+              right: index * 12,
+              zIndex: cards.length - index,
+              transition: { duration: 0.3 },
+            },
+          };
+
+          return (
+            <motion.div
+              key={`fg-${card.id}`}
+              variants={variants}
+              animate={index === 0 && isFlipped ? "flip" : "next"}
+              className={`absolute w-full lg:w-[540px] h-[248px] lg:min-h-[236px] bg-[#F2E2B1] flex flex-col cursor-grab ${
+                index === 0 && isFlipped
+                  ? "justify-start items-end"
+                  : "justify-center items-center"
+              } p-[32px] gap-[32px] rounded-md shadow-xl flashcard`}
+              drag={index === 0 && isFlipped ? false : "x"}
+              dragConstraints={{ left: -200, right: 0 }}
+              dragElastic={0.2}
+              dragSnapToOrigin={true}
+              onDragStart={() => setIsDragging(true)}
+              onDragEnd={(_event, info) => {
+                if (info.offset.x < -100) {
+                  handleNext(index);
+                }
+                setTimeout(() => setIsDragging(false), 100);
+              }}
+              whileDrag={{
+                scale: 1.05,
+                rotateZ: -5,
+                opacity: 0.8,
+              }}
+              onTap={() => {
+                if (index === 0 && !isDragging) {
+                  setIsFlipped(!isFlipped);
+                }
               }}
             >
               {index === 0 && isFlipped ? (
