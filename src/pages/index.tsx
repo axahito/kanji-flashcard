@@ -16,7 +16,7 @@ export default function Home() {
         </section>
       </main>
 
-      <footer className="flex justify-center items-center bg-[#F6F0F0] text-[#504B38]">
+      <footer className="flex justify-center items-center bg-[#F6F0F0] text-[#504B38] text-sm">
         Crafted by Abiyyu Rohman | #100ProjectsForJapan
         {/* <span>
           <Link href={"https://github.com/axahito"}>GitHub</Link> |{" "}
