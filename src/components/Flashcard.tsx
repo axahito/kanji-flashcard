@@ -324,7 +324,12 @@ const Flashcard = ({ index }: Props) => {
                 rotateZ: -5,
                 opacity: 0.8,
               }}
-              onTap={() => {
+              // onTap={() => {
+              //   if (index === 0 && !isDragging) {
+              //     setIsFlipped(!isFlipped);
+              //   }
+              // }}
+              onClick={() => {
                 if (index === 0 && !isDragging) {
                   setIsFlipped(!isFlipped);
                 }
