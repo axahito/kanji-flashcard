@@ -9,6 +9,7 @@ import { AnimatePresence, motion } from "motion/react";
 import { isEqual } from "lodash";
 import { useTour } from "@/contexts/TourProvider";
 import IconButton from "./Buttons/IconButton";
+import { useKanjiHistory } from "@/contexts/KanjiHistoryProvider";
 
 type Props = {
   index?: number;
@@ -33,6 +34,7 @@ const Flashcard = ({ index }: Props) => {
   // const [isStartTourModalOpen, setIsStartTourModalOpen] = useState(false);
 
   const { setIsRunning, setSteps } = useTour();
+  const { kanjiHistory, addKanji, backIndex, setBackIndex } = useKanjiHistory();
 
   useEffect(() => {
     const imaKanji = fetchUniqueKanji({ currentKanji: cards[0]?.kanji?.[0] });
@@ -213,6 +215,7 @@ const Flashcard = ({ index }: Props) => {
 
   const handleNext = (from: number) => {
     setIsAnimating(true);
+    addKanji(cards[from].kanji!);
     const atarashiiKanji = fetchUniqueKanji({
       currentKanji: cards[from]?.kanji?.[0],
     });
@@ -232,6 +235,33 @@ const Flashcard = ({ index }: Props) => {
       return newCards;
     });
 
+    setTimeout(() => setIsAnimating(false), 500);
+  };
+
+  const handlePrev = (from: number) => {
+    if (kanjiHistory.length === 0 || backIndex === kanjiHistory.length + 1)
+      return;
+
+    setIsAnimating(true);
+
+    setCards((prevCards) => {
+      const newCards = [...prevCards];
+
+      const [movedCard] = newCards.splice(from, 1);
+
+      const lastKanji = kanjiHistory[kanjiHistory.length - backIndex];
+
+      const updatedCard = {
+        ...movedCard,
+        kanji: lastKanji,
+      };
+
+      newCards.unshift(updatedCard);
+
+      return newCards;
+    });
+
+    setBackIndex((prev) => prev + 1);
     setTimeout(() => setIsAnimating(false), 500);
   };
 
@@ -309,7 +339,7 @@ const Flashcard = ({ index }: Props) => {
                   : "justify-center items-center"
               } p-[32px] gap-[32px] rounded-md shadow-xl flashcard`}
               drag={index === 0 && isFlipped ? false : "x"}
-              dragConstraints={{ left: -200, right: 0 }}
+              dragConstraints={{ left: -200, right: 200 }}
               dragElastic={0.2}
               dragSnapToOrigin={true}
               onDragStart={() => setIsDragging(true)}
@@ -317,6 +347,11 @@ const Flashcard = ({ index }: Props) => {
                 if (info.offset.x < -100) {
                   handleNext(index);
                 }
+
+                if (info.offset.x > 100) {
+                  handlePrev(index);
+                }
+
                 setTimeout(() => setIsDragging(false), 100);
               }}
               whileDrag={{
