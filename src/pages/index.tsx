@@ -1,5 +1,6 @@
 import Flashcard from "@/components/Flashcard";
 import KanjiFilter from "@/components/KanjiFilter";
+import { KanjiHistoryProvider } from "@/contexts/KanjiHistoryProvider";
 
 export default function Home() {
   return (
@@ -12,7 +13,9 @@ export default function Home() {
         </div>
 
         <section className="relative w-full lg:w-[540px] lg:h-[236px] mt-0">
-          <Flashcard />
+          <KanjiHistoryProvider>
+            <Flashcard />
+          </KanjiHistoryProvider>
         </section>
       </main>
 
