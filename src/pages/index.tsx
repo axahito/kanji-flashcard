@@ -5,7 +5,7 @@ import { KanjiHistoryProvider } from "@/contexts/KanjiHistoryProvider";
 export default function Home() {
   return (
     <div
-      className={`px-[16px] py-[32px] lg:p-[32px] bg-[#F6F0F0] w-screen h-screen`}
+      className={`px-[16px] py-[32px] lg:p-[32px] bg-[#F6F0F0] w-screen h-screen overflow-x-hidden`}
     >
       <main className="flex flex-col gap-[32px] items-center justify-start lg:justify-center w-full h-full">
         <div className="md:left-[10dvw] lg:left-[28dvw] w-full md:w-[540px]">
