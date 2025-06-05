@@ -215,21 +215,37 @@ const Flashcard = ({ index }: Props) => {
 
   const handleNext = (from: number) => {
     setIsAnimating(true);
-    addKanji(cards[from].kanji!);
-    const atarashiiKanji = fetchUniqueKanji({
+
+    // Add current kanji to history before getting new one
+    if (
+      cards[from].kanji &&
+      kanjiHistory[kanjiHistory.length - (backIndex - 1)]?.[0] !==
+        cards[from].kanji?.[0]
+    ) {
+      addKanji(cards[from].kanji);
+    }
+
+    // Reset back index since we're moving forward
+    setBackIndex(1);
+
+    // Get new kanji
+    const newKanji = fetchUniqueKanji({
       currentKanji: cards[from]?.kanji?.[0],
     });
 
+    // Update cards with consistent ordering
     setCards((prevCards) => {
-      const newCards = [...prevCards];
+      // Create new array to maintain immutability
+      const newCards = prevCards.map((card) => ({ ...card }));
 
+      // Move the card that was at 'from' to the back
       const [movedCard] = newCards.splice(from, 1);
-
       const updatedCard = {
         ...movedCard,
-        kanji: atarashiiKanji,
+        kanji: newKanji,
       };
 
+      // Always maintain cards[0] as current card, cards[1] as next card
       newCards.push(updatedCard);
 
       return newCards;
@@ -239,29 +255,38 @@ const Flashcard = ({ index }: Props) => {
   };
 
   const handlePrev = (from: number) => {
-    if (kanjiHistory.length === 0 || backIndex === kanjiHistory.length + 1)
+    // Check if we have history to go back to
+    if (kanjiHistory.length === 0 || backIndex > kanjiHistory.length) {
       return;
+    }
 
     setIsAnimating(true);
 
-    setCards((prevCards) => {
-      const newCards = [...prevCards];
+    // Get the previous kanji from history
+    const previousKanji = kanjiHistory[kanjiHistory.length - backIndex];
 
+    setCards((prevCards) => {
+      // Create new array to maintain immutability
+      const newCards = prevCards.map((card) => ({ ...card }));
+
+      // Remove the card at 'from' position
       const [movedCard] = newCards.splice(from, 1);
 
-      const lastKanji = kanjiHistory[kanjiHistory.length - backIndex];
-
+      // Create updated card with previous kanji
       const updatedCard = {
         ...movedCard,
-        kanji: lastKanji,
+        kanji: previousKanji,
       };
 
+      // Add to front to maintain cards[0] as current card
       newCards.unshift(updatedCard);
 
       return newCards;
     });
 
+    // Increment back index to track position in history
     setBackIndex((prev) => prev + 1);
+
     setTimeout(() => setIsAnimating(false), 500);
   };
 
@@ -373,7 +398,12 @@ const Flashcard = ({ index }: Props) => {
               {index === 0 && isFlipped ? (
                 <BackSide card={card} />
               ) : (
-                <FrontSide card={card} index={index} onClick={handleNext} />
+                <FrontSide
+                  card={card}
+                  index={index}
+                  onClick={handleNext}
+                  backIndex={backIndex}
+                />
               )}
             </motion.div>
           );
@@ -418,6 +448,12 @@ const Flashcard = ({ index }: Props) => {
           </PrimaryButton>
         </div>
       </Modal> */}
+
+      <ul className="text-black text-lg mt-[300px]">
+        {kanjiHistory.map((kanji, index) => (
+          <li key={index}>{kanji[0]}</li>
+        ))}
+      </ul>
     </Suspense>
   );
 };
@@ -426,10 +462,12 @@ const FrontSide = ({
   card,
   onClick,
   index,
+  backIndex,
 }: {
   card: KanjiItem;
   onClick: (index: number) => void;
   index: number;
+  backIndex: number;
 }) => {
   return (
     <>
@@ -451,6 +489,7 @@ const FrontSide = ({
         <ArrowTurnDownRightIcon width={24} height={24} />
       </button> */}
 
+      <p className="text-black text-lg">{backIndex}</p>
       <IconButton
         onClick={(event: React.MouseEvent) => {
           event.stopPropagation();
