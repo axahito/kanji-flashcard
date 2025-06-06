@@ -398,12 +398,7 @@ const Flashcard = ({ index }: Props) => {
               {index === 0 && isFlipped ? (
                 <BackSide card={card} />
               ) : (
-                <FrontSide
-                  card={card}
-                  index={index}
-                  onClick={handleNext}
-                  backIndex={backIndex}
-                />
+                <FrontSide card={card} index={index} onClick={handleNext} />
               )}
             </motion.div>
           );
@@ -449,11 +444,11 @@ const Flashcard = ({ index }: Props) => {
         </div>
       </Modal> */}
 
-      <ul className="text-black text-lg mt-[300px]">
+      {/* <ul className="text-black text-lg mt-[300px]">
         {kanjiHistory.map((kanji, index) => (
           <li key={index}>{kanji[0]}</li>
         ))}
-      </ul>
+      </ul> */}
     </Suspense>
   );
 };
@@ -462,12 +457,10 @@ const FrontSide = ({
   card,
   onClick,
   index,
-  backIndex,
 }: {
   card: KanjiItem;
   onClick: (index: number) => void;
   index: number;
-  backIndex: number;
 }) => {
   return (
     <>
@@ -489,7 +482,7 @@ const FrontSide = ({
         <ArrowTurnDownRightIcon width={24} height={24} />
       </button> */}
 
-      <p className="text-black text-lg">{backIndex}</p>
+      {/* <p className="text-black text-lg">{backIndex}</p> */}
       <IconButton
         onClick={(event: React.MouseEvent) => {
           event.stopPropagation();
