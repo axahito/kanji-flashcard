@@ -398,12 +398,7 @@ const Flashcard = ({ index }: Props) => {
               {index === 0 && isFlipped ? (
                 <BackSide card={card} />
               ) : (
-                <FrontSide
-                  card={card}
-                  index={index}
-                  onClick={handleNext}
-                  backIndex={backIndex}
-                />
+                <FrontSide card={card} index={index} onClick={handleNext} />
               )}
             </motion.div>
           );
@@ -462,12 +457,10 @@ const FrontSide = ({
   card,
   onClick,
   index,
-  backIndex,
 }: {
   card: KanjiItem;
   onClick: (index: number) => void;
   index: number;
-  backIndex: number;
 }) => {
   return (
     <>
