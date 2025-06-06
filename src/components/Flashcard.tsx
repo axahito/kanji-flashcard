@@ -449,11 +449,11 @@ const Flashcard = ({ index }: Props) => {
         </div>
       </Modal> */}
 
-      <ul className="text-black text-lg mt-[300px]">
+      {/* <ul className="text-black text-lg mt-[300px]">
         {kanjiHistory.map((kanji, index) => (
           <li key={index}>{kanji[0]}</li>
         ))}
-      </ul>
+      </ul> */}
     </Suspense>
   );
 };
@@ -489,7 +489,7 @@ const FrontSide = ({
         <ArrowTurnDownRightIcon width={24} height={24} />
       </button> */}
 
-      <p className="text-black text-lg">{backIndex}</p>
+      {/* <p className="text-black text-lg">{backIndex}</p> */}
       <IconButton
         onClick={(event: React.MouseEvent) => {
           event.stopPropagation();
