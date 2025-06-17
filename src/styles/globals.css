@@ -3,6 +3,9 @@
 :root {
   --background: #ffffff;
   --foreground: #171717;
+  --typography-hover: #424769;
+  --typography-foreground: #161A30;
+  --typography-background: #6a7282;
 }
 
 @theme inline {
@@ -11,6 +14,20 @@
   --font-noto: "Noto Sans JP", sans-serif;
   --font-indie: "Indie Flower", sans-serif;
   --font-mono: var(--font-geist-mono);
+  --color-primary-50: #fdf4f3;
+  --color-primary-100: #fbe7e5;
+  --color-primary-200: #f8d3d0;
+  --color-primary-300: #f1b5b0;
+  --color-primary-400: #e78a82;
+  --color-primary-500: #da6459;
+  --color-primary-600: #ba4237;
+  --color-primary-700: #a6392f;
+  --color-primary-800: #89332b;
+  --color-primary-900: #732f29;
+  --color-primary-950: #3e1511;
+  --color-typography-hover: var(--typography-hover);
+  --color-typography-foreground: var(--typography-foreground);
+  --color-typography-background: var(--typography-background);
 }
 
 @media (prefers-color-scheme: dark) {
@@ -37,8 +54,14 @@
 
 body {
   background: var(--background);
-  color: var(--foreground);
+  color: var(--color-typography-foreground);
   font-family: Arial, Helvetica, sans-serif;
+  -ms-overflow-style: none;
+  scrollbar-width: none;
+}
+
+body::-webkit-scrollbar {
+  display: none;
 }
 
 @layer base {
@@ -56,5 +79,25 @@ body {
   }
   h5 {
     @apply text-[1.25rem] font-medium leading-[1.4] tracking-wide;
+  }
+  h6 {
+    @apply text-[1rem] font-medium leading-[1.5];
+  }
+
+  nav a {
+    @apply text-typography-foreground font-medium hover:text-typography-hover transition-colors duration-200 text-lg;
+  }
+
+  a {
+    @apply text-primary-600 font-semibold hover:text-primary-700 transition-colors duration-200;
+  }
+
+  .no-scrollbar {
+    -ms-overflow-style: none; /* IE and Edge */
+    scrollbar-width: none; /* Firefox */
+  }
+
+  .no-scrollbar::-webkit-scrollbar {
+    display: none; /* Chrome, Safari, Opera */
   }
 }

@@ -41,11 +41,15 @@ const KanjiFilter = () => {
 
   // TODO: make the transform for the DisclosureButton smooth movement
   return (
-    <Disclosure as="div" className="text-[#504B38] w-full filter-controls" defaultOpen={true}>
+    <Disclosure
+      as="div"
+      className="text-typography-foreground w-full filter-controls"
+      defaultOpen={true}
+    >
       {({ open }) => (
         <>
           <DisclosureButton className="flex justify-start">
-            <motion.span className="text-sm font-medium hover:text-[#BDB395] flex items-center gap-2 cursor-pointer">
+            <motion.span className="text-sm font-medium hover:text-typography-hover flex items-center gap-2 cursor-pointer">
               <AdjustmentsHorizontalIcon width={24} height={24} />
               Filters
             </motion.span>
