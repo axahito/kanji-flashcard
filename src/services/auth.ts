@@ -6,23 +6,38 @@ import {
 import { auth } from "../lib/firebase";
 
 export class AuthService {
-  static async SignUp(email: string, password: string) {
-    const credential = await createUserWithEmailAndPassword(
-      auth,
-      email,
-      password
-    );
-
-    return credential.user;
+  static async signUp(email: string, password: string) {
+    try {
+      const credential = await createUserWithEmailAndPassword(
+        auth,
+        email,
+        password
+      );
+      return { user: credential.user, error: null };
+    } catch (error: unknown) {
+      return { user: null, error };
+    }
   }
 
-  static async SignIn(email: string, password: string) {
-    const credential = await signInWithEmailAndPassword(auth, email, password);
-
-    return credential.user;
+  static async signIn(email: string, password: string) {
+    try {
+      const credential = await signInWithEmailAndPassword(
+        auth,
+        email,
+        password
+      );
+      return { user: credential.user, error: null };
+    } catch (error: unknown) {
+      return { user: null, error };
+    }
   }
 
-  static async SignOut() {
-    await signOut(auth);
+  static async signOut() {
+    try {
+      await signOut(auth);
+      return { success: true, error: null };
+    } catch (error: unknown) {
+      return { success: false, error };
+    }
   }
 }

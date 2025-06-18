@@ -2,12 +2,17 @@ import Link from "next/link";
 import { usePathname, useRouter } from "next/navigation";
 import React from "react";
 import IconButton from "./Buttons/IconButton";
-import { ChevronLeftIcon } from "@heroicons/react/24/outline";
+import {
+  ArrowLeftStartOnRectangleIcon,
+  ChevronLeftIcon,
+} from "@heroicons/react/24/outline";
 import PrimaryButton from "./Buttons/PrimaryButton";
+import { useAuth } from "@/contexts/AuthProvider";
 
 const Navbar = () => {
   const pathname = usePathname();
   const router = useRouter();
+  const { user, logout } = useAuth();
 
   const isHome = pathname === "/";
 
@@ -23,6 +28,10 @@ const Navbar = () => {
     {
       label: "Sign In",
       href: "/signin",
+    },
+    {
+      label: "Dashboard",
+      href: "/dashboard",
     },
   ];
 
@@ -68,28 +77,48 @@ const Navbar = () => {
             <LinkLabel>
               {links.find((link) => link.href === pathname)?.label}
             </LinkLabel>
+
+            {user && (
+              <IconButton className="justify-self-end" onClick={() => logout()}>
+                <ArrowLeftStartOnRectangleIcon
+                  width={18}
+                  height={18}
+                  className="text-primary-600 hover:text-primary-700 transition-colors duration-200"
+                />
+              </IconButton>
+            )}
           </>
         )}
       </div>
 
       {/* desktop navbar */}
-      <div className="w-full flex items-center justify-between">
+      <div className="w-full hidden md:flex items-center justify-between">
         <Link href={"/"}>
           <LinkLabel textAlign="text-left">Flashcard</LinkLabel>
         </Link>
 
-        <div className="flex gap-[32px] items-center">
-          <Link
-            href={"/signin"}
-            className="text-primary-600 font-semibold hover:text-primary-700 transition-colors duration-200 hover:underline"
-          >
-            Sign In
-          </Link>
+        {user ? (
+          <IconButton className="justify-self-end" onClick={() => logout()}>
+            <ArrowLeftStartOnRectangleIcon
+              width={20}
+              height={20}
+              className="text-primary-600 hover:text-primary-700 transition-colors duration-200"
+            />
+          </IconButton>
+        ) : (
+          <div className="flex gap-[32px] items-center">
+            <Link
+              href={"/signin"}
+              className="text-primary-600 font-semibold hover:text-primary-700 transition-colors duration-200 hover:underline"
+            >
+              Sign In
+            </Link>
 
-          <Link href={"/signup"}>
-            <PrimaryButton>Sign Up</PrimaryButton>
-          </Link>
-        </div>
+            <Link href={"/signup"}>
+              <PrimaryButton>Sign Up</PrimaryButton>
+            </Link>
+          </div>
+        )}
       </div>
     </nav>
   );

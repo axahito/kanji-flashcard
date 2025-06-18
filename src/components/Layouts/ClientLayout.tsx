@@ -1,24 +1,14 @@
-import React, { useEffect } from "react";
+import React from "react";
 import Navbar from "../Navbar";
 import Footer from "../Footer";
-import { useAuth } from "@/contexts/AuthProvider";
-import { useRouter } from "next/navigation";
 
-const GuestLayout = ({ children }: { children: React.ReactNode }) => {
-  const { user } = useAuth();
-  const router = useRouter();
-
-  useEffect(() => {
-    if (user) {
-      router.replace("/dashboard");
-    }
-  }, [user, router]);
-
+const ClientLayout = ({ children }: { children: React.ReactNode }) => {
   return (
     <div
       className={`bg-[#F6F0F0] w-screen h-screen overflow-x-hidden no-scrollbar`}
     >
       <Navbar />
+      Client Layout
 
       <main className="flex flex-col gap-[32px] px-[16px] py-[32px] lg:p-[32px] items-center justify-start lg:justify-center w-full h-full">
         {children}
@@ -29,4 +19,4 @@ const GuestLayout = ({ children }: { children: React.ReactNode }) => {
   );
 };
 
-export default GuestLayout;
+export default ClientLayout;

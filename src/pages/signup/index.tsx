@@ -12,16 +12,12 @@ import React, { ReactElement, useState } from "react";
 import { useSignupForm } from "../../hooks/useSignupForm";
 import PrimaryButton from "@/components/Buttons/PrimaryButton";
 import Link from "next/link";
-import { SignupSchema } from "../../schema/signupSchema";
+import FormControl from "@/components/Form/FormControl";
 
 export default function SignUp() {
   const [showPassword, setShowPassword] = useState(false);
 
-  const onSubmit = (data: SignupSchema) => {
-    console.log("Submitted:", data);
-  };
-
-  const { register, handleSubmit } = useSignupForm(onSubmit);
+  const { register, handleSubmit, errors, isLoading } = useSignupForm();
 
   return (
     <div className="mx-auto w-full md:w-[554px] rounded-lg p-[8px] md:p-[32px] md:shadow-lg">
@@ -32,67 +28,83 @@ export default function SignUp() {
         className="md:mt-[40px] flex flex-col gap-[16px]"
       >
         <div className="w-full flex flex-col md:flex-row gap-[16px] md:gap-[8px]">
-          <TextInput
-            {...register("firstName")}
+          <FormControl
             label="First Name"
-            required
-            type="text"
-            placeholder="Your First Name"
-          />
+            errorMessage={errors.firstName?.message}
+          >
+            <TextInput
+              {...register("firstName")}
+              required
+              type="text"
+              placeholder="Your First Name"
+            />
+          </FormControl>
 
-          <TextInput
-            {...register("lastName")}
+          <FormControl
             label="Last Name"
-            required
-            type="text"
-            placeholder="Your Last Name"
-          />
+            errorMessage={errors.lastName?.message}
+          >
+            <TextInput
+              {...register("lastName")}
+              required
+              type="text"
+              placeholder="Your Last Name"
+            />
+          </FormControl>
         </div>
 
-        <TextInput
-          {...register("email")}
-          label="Email"
-          required
-          type="email"
-          placeholder="Your Email Address"
-          prefix={<EnvelopeIcon width={"100%"} height={"100%"} />}
-        />
+        <FormControl label="Email" errorMessage={errors.email?.message}>
+          <TextInput
+            {...register("email")}
+            required
+            type="email"
+            placeholder="Your Email Address"
+            prefix={<EnvelopeIcon width={"100%"} height={"100%"} />}
+          />
+        </FormControl>
 
-        <TextInput
-          {...register("password")}
-          label="Password"
-          required
-          type={showPassword ? "text" : "password"}
-          placeholder="Your Password"
-          prefix={<LockClosedIcon width={"100%"} height={"100%"} />}
-          suffix={
-            <IconButton
-              onClick={() => setShowPassword((prev) => !prev)}
-              role="button"
-              type="button"
-            >
-              {showPassword ? (
-                <EyeSlashIcon width={"100%"} height={"100%"} />
-              ) : (
-                <EyeIcon width={"100%"} height={"100%"} />
-              )}
-            </IconButton>
-          }
-        />
+        <FormControl label="Password" errorMessage={errors.password?.message}>
+          <TextInput
+            {...register("password")}
+            required
+            type={showPassword ? "text" : "password"}
+            placeholder="Your Password"
+            prefix={<LockClosedIcon width={"100%"} height={"100%"} />}
+            suffix={
+              <IconButton
+                data-testid="toggle-password"
+                onClick={() => setShowPassword((prev) => !prev)}
+                role="button"
+                type="button"
+              >
+                {showPassword ? (
+                  <EyeSlashIcon width={"100%"} height={"100%"} />
+                ) : (
+                  <EyeIcon width={"100%"} height={"100%"} />
+                )}
+              </IconButton>
+            }
+          />
+        </FormControl>
 
-        <TextInput
-          {...register("confirmPassword")}
+        <FormControl
           label="Confirm Password"
-          required
-          type={showPassword ? "text" : "password"}
-          placeholder="Confrim Your Password"
-          prefix={<LockClosedIcon width={"100%"} height={"100%"} />}
-        />
+          errorMessage={errors.confirmPassword?.message}
+        >
+          <TextInput
+            {...register("confirmPassword")}
+            required
+            type={"password"}
+            placeholder="Confrim Your Password"
+            prefix={<LockClosedIcon width={"100%"} height={"100%"} />}
+            // onChange={() => validateConfirmPassword()}
+          />
+        </FormControl>
 
         <div className="w-full flex flex-col lg:flex-row gap-[16px] lg:gap-[8px]">
           <span className="w-full lg:w-1/2">
-            <PrimaryButton role="submit" fullWidth>
-              Sign Up
+            <PrimaryButton role="submit" disabled={isLoading} fullWidth>
+              {isLoading ? "Loading..." : "Sign Up"}
             </PrimaryButton>
           </span>
 
