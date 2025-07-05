@@ -50,7 +50,7 @@ const Typewriter = ({ currentStep, steps }: Props) => {
         variants={sentenceVariants}
         initial="hidden"
         animate="visible"
-        className="text-[#222831]"
+        className="text-typography-foreground"
         onAnimationStart={() => {
           console.log("ANIMATION START?");
           handleStartAudio();

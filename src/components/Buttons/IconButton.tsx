@@ -1,25 +1,22 @@
-import React from "react";
+import React, { ButtonHTMLAttributes } from "react";
 
-type Props = {
-  onClick?: (event: React.MouseEvent) => void;
+interface Props extends ButtonHTMLAttributes<HTMLButtonElement> {
   children: React.ReactNode;
-  className?: string;
-  disabled?: boolean;
-};
+  fullWidth?: boolean;
+}
 
 const IconButton = ({
-  onClick,
   children,
-  className,
-  disabled = false,
+  fullWidth = false,
+  className = "",
+  ...props
 }: Props) => {
   return (
     <button
-      disabled={disabled}
-      onClick={onClick}
-      className={`text-[#222831] hover:text-[#393E46] transition-colors duration-200 ${className} ${
-        disabled ? "opacity-50 cursor-default" : "cursor-pointer"
-      }`}
+      {...props}
+      className={`text-typography-foreground hover:text-typography-hover transition-colors duration-200 flex gap-[4px] items-center ${className} ${
+        props.disabled ? "opacity-50 cursor-default" : "cursor-pointer"
+      } ${fullWidth ? "w-full" : "w-auto"}`}
     >
       {children}
     </button>

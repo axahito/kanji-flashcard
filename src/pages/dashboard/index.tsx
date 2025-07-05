@@ -1,13 +1,13 @@
 import Flashcard from "@/components/Flashcard";
 import KanjiFilter from "@/components/KanjiFilter";
-import GuestLayout from "@/components/Layouts/GuestLayout";
+import ClientLayout from "@/components/Layouts/ClientLayout";
 import { KanjiHistoryProvider } from "@/contexts/KanjiHistoryProvider";
-import { ReactElement } from "react";
+import React, { ReactElement } from "react";
 
-export default function Home() {
+export default function Dashboard() {
   return (
     <>
-      <div className="md:left-[10dvw] lg:left-[28dvw] w-full md:w-[540px]">
+      <div className="md:left-[10dvw] lg:left-[28dvw] w-full md:w-[540px] mt-[32px]">
         <KanjiFilter />
       </div>
 
@@ -20,6 +20,6 @@ export default function Home() {
   );
 }
 
-Home.getLayout = function getLayout(page: ReactElement) {
-  return <GuestLayout>{page}</GuestLayout>;
+Dashboard.getLayout = function getLayout(page: ReactElement) {
+  return <ClientLayout>{page}</ClientLayout>;
 };
