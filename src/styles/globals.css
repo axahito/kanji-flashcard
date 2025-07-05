@@ -4,7 +4,7 @@
   --background: #ffffff;
   --foreground: #171717;
   --typography-hover: #424769;
-  --typography-foreground: #161A30;
+  --typography-foreground: #161a30;
   --typography-background: #6a7282;
 }
 
@@ -99,5 +99,9 @@ body::-webkit-scrollbar {
 
   .no-scrollbar::-webkit-scrollbar {
     display: none; /* Chrome, Safari, Opera */
+  }
+
+  button:disabled {
+    @apply opacity-50 cursor-default;
   }
 }

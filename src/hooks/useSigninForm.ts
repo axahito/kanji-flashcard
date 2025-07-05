@@ -1,6 +1,7 @@
 import { signinSchema, SigninSchema } from "@/schema/signinSchema";
 import { AuthService } from "@/services/auth";
 import { zodResolver } from "@hookform/resolvers/zod";
+import { FirebaseError } from "firebase/app";
 import { useRouter } from "next/router";
 import { useState } from "react";
 import { useForm } from "react-hook-form";
@@ -10,6 +11,7 @@ export function useSigninForm() {
 
   // states
   const [isLoading, setIsLoading] = useState(false);
+  const [error, setError] = useState<string | null>(null);
 
   // useForm
   const {
@@ -22,7 +24,6 @@ export function useSigninForm() {
   });
 
   const onSubmit = async (data: SigninSchema) => {
-    console.log("Submitted:", data);
     const { email, password } = data;
 
     setIsLoading(true);
@@ -34,8 +35,15 @@ export function useSigninForm() {
       }
 
       router.push("/dashboard");
-    } catch (error) {
-      console.error("Signup error:", error);
+    } catch (error: unknown) {
+      console.log("Signin error:", error);
+
+      if (
+        (error as FirebaseError).message ===
+        "Firebase: Error (auth/invalid-credential)."
+      ) {
+        setError("Invalid email or password. Please try again.");
+      }
     } finally {
       setIsLoading(false);
     }
@@ -51,5 +59,7 @@ export function useSigninForm() {
     // states
     isLoading,
     setIsLoading,
+    error,
+    setError,
   };
 }

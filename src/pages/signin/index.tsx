@@ -16,7 +16,7 @@ import React, { ReactElement, useState } from "react";
 export default function SignIn() {
   const [showPassword, setShowPassword] = useState(false);
 
-  const { register, handleSubmit, errors, isLoading } = useSigninForm();
+  const { register, handleSubmit, errors, isLoading, error } = useSigninForm();
 
   return (
     <div className="mx-auto w-full md:w-[554px] rounded-lg p-[8px] md:p-[32px] md:shadow-lg">
@@ -59,7 +59,11 @@ export default function SignIn() {
           />
         </FormControl>
 
-        <PrimaryButton>{isLoading ? "Signing In..." : "Sign In"}</PrimaryButton>
+        {error && <p className="text-red-500">{error}</p>}
+
+        <PrimaryButton disabled={isLoading}>
+          {isLoading ? "Signing In..." : "Sign In"}
+        </PrimaryButton>
 
         <div className="w-full flex justify-between">
           <p>New to Kanji Flashcard?</p>

@@ -13,7 +13,7 @@ const FormControl = ({ label, errorMessage, children }: Props) => {
       {children}
 
       {errorMessage && (
-        <p className="text-xs text-red-500 mt-[4px]">{errorMessage}</p>
+        <p className="text-xs text-red-500 mt-[8px] font-light">{errorMessage}</p>
       )}
     </label>
   );

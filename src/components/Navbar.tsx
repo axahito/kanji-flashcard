@@ -14,7 +14,7 @@ const Navbar = () => {
   const router = useRouter();
   const { user, logout } = useAuth();
 
-  const isHome = pathname === "/";
+  const isHome = pathname === "/" || pathname === "/dashboard";
 
   const links = [
     {
@@ -60,9 +60,19 @@ const Navbar = () => {
         } md:hidden`}
       >
         {isHome ? (
-          <Link href={"/signin"}>
-            <LinkLabel textAlign="text-right">Sign In</LinkLabel>
-          </Link>
+          user ? (
+            <IconButton className="justify-self-end" onClick={() => logout()}>
+              <ArrowLeftStartOnRectangleIcon
+                width={18}
+                height={18}
+                className="text-primary-600 hover:text-primary-700 transition-colors duration-200"
+              />
+            </IconButton>
+          ) : (
+            <Link href={"/signin"}>
+              <LinkLabel textAlign="text-right">Sign In</LinkLabel>
+            </Link>
+          )
         ) : (
           <>
             <IconButton
@@ -77,16 +87,6 @@ const Navbar = () => {
             <LinkLabel>
               {links.find((link) => link.href === pathname)?.label}
             </LinkLabel>
-
-            {user && (
-              <IconButton className="justify-self-end" onClick={() => logout()}>
-                <ArrowLeftStartOnRectangleIcon
-                  width={18}
-                  height={18}
-                  className="text-primary-600 hover:text-primary-700 transition-colors duration-200"
-                />
-              </IconButton>
-            )}
           </>
         )}
       </div>
