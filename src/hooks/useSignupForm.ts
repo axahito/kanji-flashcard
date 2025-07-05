@@ -45,7 +45,7 @@ export function useSignupForm() {
 
       console.log("User created and document added");
     } catch (error) {
-      console.error("Signup error:", error);
+      console.log("Signup error:", error);
     } finally {
       setIsLoading(false);
     }
