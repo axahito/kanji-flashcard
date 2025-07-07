@@ -52,9 +52,11 @@ const Sidebar = () => {
 
       {/* sidebar */}
       <aside
-        className={`w-screen h-screen md:w-[280px] bg-[#F6F0F0] border-r border-gray-300 fixed z-40 ${
-          isOpen ? "translate-x-0" : "translate-x-full md:-translate-x-full"
-        } duration-200 ease-in-out flex flex-col gap-[24px] p-[16px] md:py-[24px]`}
+        className={`fixed md:relative bg-[#F6F0F0] border-r border-gray-300 z-40 ${
+          isOpen
+            ? "w-screen h-screen md:w-[280px] p-[16px] md:py-[24px] translate-x-0"
+            : "w-screen md:w-[0px] py-[16px] md:py-[24px] px-0 overflow-hidden translate-x-full md:translate-x-0"
+        } duration-200 ease-in-out flex flex-col gap-[24px]`}
       >
         {/* logo and close button */}
         <div className="flex space-between w-full items-center">

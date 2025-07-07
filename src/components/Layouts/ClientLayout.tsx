@@ -21,7 +21,7 @@ const ClientLayout = ({ children }: { children: React.ReactNode }) => {
     >
       <Sidebar />
 
-      <main className="flex flex-col gap-[32px] px-[16px] py-[32px] lg:p-[32px] items-center justify-start lg:justify-center w-full h-full">
+      <main className="flex flex-col gap-[32px] p-[16px] py-[32px] lg:p-[32px] items-center justify-start lg:justify-center w-full h-full">
         {children}
       </main>
     </div>
