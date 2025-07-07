@@ -29,7 +29,7 @@ const navItems = [
 
 const Sidebar = () => {
   const router = useRouter();
-  const [isOpen, setIsOpen] = useState(true);
+  const [isOpen, setIsOpen] = useState(false);
 
   const { profile, logout } = useAuth();
 
@@ -37,9 +37,9 @@ const Sidebar = () => {
     <>
       {/* sidebar toggle button */}
       <IconButton
-        className={`fixed top-[16px] left-0 ${
+        className={`fixed bottom-[30dvh] right-0 md:bottom-auto md:right-auto md:top-[16px] md:left-0 rotate-180 md:rotate-0 ${
           isOpen ? "translate-x-[280px]" : "translate-x-0"
-        } bg-[#F6F0F0] rounded-r-md shadow-lg p-[8px] hover:bg-primary-500 hover:text-white duration-200 ease-in-out transition-transform`}
+        } bg-primary-500 rounded-r-md shadow-lg p-[8px] hover:bg-primary-700 text-white hover:text-white duration-200 ease-in-out transition-transform`}
         onClick={() => setIsOpen(!isOpen)}
       >
         {isOpen ? (
@@ -51,8 +51,8 @@ const Sidebar = () => {
 
       {/* sidebar */}
       <aside
-        className={`w-screen md:w-[280px] h-full bg-[#F6F0F0] border-r border-gray-300 fixed z-40 ${
-          isOpen ? "translate-x-0" : "-translate-x-full"
+        className={`w-screen h-screen md:w-[280px] bg-[#F6F0F0] border-r border-gray-300 fixed z-40 ${
+          isOpen ? "translate-x-0" : "translate-x-full md:-translate-x-full"
         } duration-200 ease-in-out flex flex-col gap-[24px] p-[16px] md:py-[24px]`}
       >
         {/* logo and close button */}

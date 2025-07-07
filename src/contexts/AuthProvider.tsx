@@ -10,15 +10,23 @@ const AuthContext = createContext<{
   user: User | null;
   profile: Profile | null;
   logout: () => Promise<void>;
-}>({ user: null, profile: null, logout: () => Promise.resolve() });
+  loading: boolean;
+}>({
+  user: null,
+  profile: null,
+  logout: () => Promise.resolve(),
+  loading: true,
+});
 
 export const AuthProvider = ({ children }: { children: React.ReactNode }) => {
   const [user, setUser] = useState<User | null>(null);
   const [profile, setProfile] = useState<Profile | null>(null);
+  const [loading, setLoading] = useState(true);
 
   useEffect(() => {
     const unsub = onAuthStateChanged(auth, async (firebaseUser) => {
       setUser(firebaseUser);
+      setLoading(false);
 
       if (firebaseUser) {
         try {
@@ -59,7 +67,7 @@ export const AuthProvider = ({ children }: { children: React.ReactNode }) => {
   };
 
   return (
-    <AuthContext.Provider value={{ user, profile, logout }}>
+    <AuthContext.Provider value={{ user, profile, logout, loading }}>
       {children}
     </AuthContext.Provider>
   );

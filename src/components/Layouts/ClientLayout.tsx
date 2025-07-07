@@ -4,14 +4,17 @@ import { useRouter } from "next/router";
 import Sidebar from "../Sidebar/Sidebar";
 
 const ClientLayout = ({ children }: { children: React.ReactNode }) => {
-  const { user } = useAuth();
+  const { user, loading } = useAuth();
+  console.log("user", user);
   const router = useRouter();
 
   useEffect(() => {
-    if (!user) {
+    if (!loading && !user) {
       router.replace("/");
     }
-  }, [user, router]);
+  }, [user, loading, router]);
+
+  if (loading) return <></>;
 
   return (
     <div
