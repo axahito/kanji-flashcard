@@ -13,6 +13,7 @@ import {
 import { useRouter } from "next/router";
 import { useAuth } from "@/contexts/AuthProvider";
 import Image from "next/image";
+import Link from "next/link";
 
 const navItems = [
   {
@@ -86,7 +87,7 @@ const Sidebar = () => {
 
             return (
               <li key={item.name}>
-                <a
+                <Link
                   href={item.href}
                   className={`flex flex-row gap-[16px] items-center pl-[24px] pr-[16px] py-[16px] hover:bg-[#EDE6E6] duration-200 ease-in-out rounded-md text-typography-foreground ${
                     isActive ? "bg-[#EDE6E6]" : "bg-transparent"
@@ -94,7 +95,7 @@ const Sidebar = () => {
                 >
                   {item.icon}
                   <span className="font-medium text-base">{item.name}</span>
-                </a>
+                </Link>
               </li>
             );
           })}
@@ -126,7 +127,7 @@ const Sidebar = () => {
           {/* version tag */}
           <div className="flex flex-row md:flex-col gap-[4px] justify-center">
             <p className="text-xs text-typography-background text-center">
-              Crafted by Abiyyu Rohman version 0.5
+              Version 0.5
             </p>
             <p className="text-xs text-typography-background text-center">
               #100ProjectsForJapan

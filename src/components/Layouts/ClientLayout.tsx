@@ -5,7 +5,6 @@ import Sidebar from "../Sidebar/Sidebar";
 
 const ClientLayout = ({ children }: { children: React.ReactNode }) => {
   const { user, loading } = useAuth();
-  console.log("user", user);
   const router = useRouter();
 
   useEffect(() => {
